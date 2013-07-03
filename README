@@ -1,12 +1,7 @@
-Welcome!
+I took a couple of hours and wrote a FruitBot.
 
-Modify mybot.js to start writing your bot. Opening game.html will allow you to generate random boards, and either watch your bot play or step through one move at a time. Refer to http://www.scribd.com/jobs/botrace_api for available methods. gl/hf!
+The fun part was the model, basically it was inspired by the SVM method of solving classification problems -- where you create a hyperplane in R^N-1 to separate data points in R^N (ideally, all the 0s will lie on one side of the plane and all the 1s on the other).
 
-Scribd.
+In this case it took the form of finding the line that best divided my robot from the other robot (with the most attractive fruit set on my side) and chasing the fruit on my side of the line. The basic prototype seems to have achieved a reasonable amount of success, though I could definitely put a lot more work into it.
 
-ps: you should be able to ignore everything in assets/, but if you want to disable the opponent bot from playing in game.html, go to assets/simplebot.js and find:
-    makeMove: function() {
-       // to disable to opponent, uncomment the next line
-       // return PASS;
-
-Uncomment the "return PASS;" and your bot will be free to roam the board alone.
+fruitbots.org/users/1678
