@@ -15,12 +15,12 @@ function make_move() {
 
        board = get_board();
        if (SLOPE = 999.556){
-         SLOPE = find_slope(get_my_x(),get_my_y(),get_opponent_x(),get_opponent_y());
+         SLOPE = find_slope(get_my_x(),get_my_y(),get_opponent_x(),get_opponent_y()); 
       }
 
        // we found an item! take it!
        if (has_item(board[get_my_x()][get_my_y()])) {
-           SLOPE = 999.556
+           SLOPE = 999.556 // only recaclulate board after grabbing a fruit, to prevent fruitless wandering
            return TAKE;
        }
 
@@ -45,9 +45,9 @@ function make_move() {
        //console.log(move)
        return move;
 }
-function basicMove(){
-   x = get_my_x();
-   y = get_my_y();
+function basicMove(){ // fruitBot seems to get confused in endgame situations with little fruit on the board. 
+   x = get_my_x();     //  the normal alogirthms don't return any moves.
+   y = get_my_y();      // wrote this backup algorithm to make sure it headed towards the fruit in that situation.
    remainingItems = new Array();
    for(var i = 0; i<WIDTH;i++){
       for(var j = 0; j<HEIGHT;j++){
@@ -79,9 +79,9 @@ function basicMove(){
 function findMove(n) {
     // closest item! we will go to it
     board = get_board();
-    if (has_item(board[n.x][n.y]) && (n.x-XBASE)*SLOPE*SIDE < (n.y-YBASE)){
-      //console.log(n.x,XBASE,SLOPE,SIDE)
-      //console.log("eat move")
+    if (has_item(board[n.x][n.y]) && (n.x-XBASE)*SLOPE*SIDE < (n.y-YBASE)){ // this is the key criterion!
+      //console.log(n.x,XBASE,SLOPE,SIDE)                                  // only move towards fruit if it's on the 
+      //console.log("eat move")                                            // correct side of the board
       return n.move;
     }
     var possibleMove = n.move;
@@ -230,14 +230,14 @@ function find_slope(my_x, my_y, their_x, their_y) {
 
    multiplier = 1
    if (my_x == their_x && my_y == their_y){
-      multiplier = 2 //
+      multiplier = 2 //called if the two bots are in the same place
    }
    arrays = new Array(multiplier*newSlope.length)
    sides = new Array(multiplier*newSlope.length) 
    for (var i=0;i<multiplier*newSlope.length;i++){
             arrays[i] = better_position(my_x, my_y, their_x, their_y, newSlope[i],3.1416*multiplier); //junk variable
          }
-   for (var i=newSlope.length;i<multiplier*newSlope.length;i++){ // this only comes up if multiply = 2
+   for (var i=newSlope.length;i<multiplier*newSlope.length;i++){ // this only comes up if multipler = 2
             arrays[i] = better_position(my_x, my_y, their_x, their_y, newSlope[i-newSlope.length],-3.1416*multiplier); //junk variable -- only comes up if m
             //console.log("here?", i)
          }
@@ -316,7 +316,7 @@ function better_position(my_x, my_y, their_x, their_y, slope_x, multiply) {
       multiply = determineSide(my_x, my_y, their_x, their_y, slope_x);
    }
    else{
-      multiply /= (2*3.1416) //set multiply to 1 or -1
+      multiply /= (2*3.1416) //set multiply to 1 or -1. This is called when the two bots are in the same position
    }
    var board = get_board();
    XBASE = (my_x + their_x) / 2;
